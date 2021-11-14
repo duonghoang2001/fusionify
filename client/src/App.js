@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Button, Checkbox } from '@material-ui/core';
 
-import { getTrack, getTopArtists } from './functions.js';
+import { getTrack, getTopArtists, getCurrentUser, createNewPlaylist } from './functions.js';
 
 import { createTheme, ThemeProvider } from '@material-ui/core';
 
@@ -27,11 +27,13 @@ class App extends Component {
       loggedIn: token ? true : false,
       auth: {headers: {'Authorization': 'Bearer ' + token}},
       track: null,
+      currentUser: null,
     }
   }
 
   componentDidMount() {
-    this.getNowPlaying()
+    this.getFriends();
+    this.getCurrentUser();
   }
 
   getHashParams() {
@@ -50,12 +52,24 @@ class App extends Component {
     return <Checkbox />;
   }
 
-  getNowPlaying(){
-    getTrack('11dFghVXANMlKmJXsNCbNl', this.state.auth).then((a) => {
-      this.setState({ track: a }, () => {
+  getFriends(){
+    getTrack('11dFghVXANMlKmJXsNCbNl', this.state.auth).then(track => {
+      this.setState({ track: track }, () => {
         console.log(this.state.track.data);
       });
     });
+  }
+
+  getCurrentUser(){
+    getCurrentUser(this.state.auth).then(user => {
+      this.setState({ currentUser: user }, () => {
+        console.log(this.state.currentUser);
+      });
+    });
+  }
+
+  createNewPlaylist(){
+    createNewPlaylist(this.state.currentUser.data.id, "test playlist", this.state.auth);
   }
 
   render() {
@@ -64,16 +78,16 @@ class App extends Component {
         {this.state.track && <div>
           {this.state.track.data.name}
         </div>}
-        <div>
-          {getTopArtists(this.state.auth)}
-        </div>
+        {this.state.currentUser && <div>
+          {this.state.currentUser.data.display_name}
+        </div>}
         {!this.state.loggedIn && <a href='http://localhost:8888' > Login to Spotify </a>}
 
         { this.state.loggedIn &&
           <ThemeProvider theme={theme}>
             <div>
-              <Button variant='contained' color='primary' onClick={() => console.log(this.state.track ? this.state.track.data : 'yeet')}>
-                Select Users
+              <Button variant='contained' color='primary' onClick={() => this.createNewPlaylist()}>
+                Generate Playlist
               </Button>
               <Checkbox />
             </div>
