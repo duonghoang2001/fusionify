@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import { Button } from '@material-ui/core';
 
-import { getTrack, getTopArtists } from './functions.js';
-
+import { getTopArtists, getTrack } from "./functions.js";
 import { createTheme, ThemeProvider } from '@material-ui/core';
 
 const theme = createTheme({
@@ -17,15 +16,20 @@ const theme = createTheme({
     }
   }
 });
+import SpotifyWebApi from 'spotify-web-api-js';
+const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
   constructor(){
     super();
     const params = this.getHashParams();
     const token = params.access_token;
-
+    if (token) {
+      spotifyApi.setAccessToken(token);
+    }
     this.state = {
       loggedIn: token ? true : false,
+      nowPlaying: { name: 'Not Checked', albumArt: '' },
       auth: {headers: {'Authorization': 'Bearer ' + token}}
     }
   }
@@ -42,7 +46,15 @@ class App extends Component {
   }
 
   getNowPlaying(){
-    console.log('getNowPlaying() here');
+    spotifyApi.getMyCurrentPlaybackState()
+      .then((response) => {
+        this.setState({
+          nowPlaying: { 
+              name: response.item.name, 
+              albumArt: response.item.album.images[0].url
+            }
+        });
+      })
   }
 
   render() {
@@ -55,7 +67,12 @@ class App extends Component {
           {getTopArtists(this.state.auth)}
         </div>}
         {!this.state.loggedIn && <a href='http://localhost:8888' > Login to Spotify </a>}
-
+        <div>
+          Now Playing: { this.state.nowPlaying.name }
+        </div>
+        <div>
+          <img src={this.state.nowPlaying.albumArt} alt="no cover" style={{ height: 150 }}/>
+        </div>
         { this.state.loggedIn &&
           <ThemeProvider theme={theme}>
             <div>
@@ -69,6 +86,9 @@ class App extends Component {
               </Button>
             </div>
           </ThemeProvider>
+          <button onClick={() => this.getNowPlaying()}>
+            Check Now Playing
+          </button>
         }
       </div>
     );
