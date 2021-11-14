@@ -25,9 +25,8 @@ There are two parts to it, the auth-server, and the client.
 - Run the Server `npm start`
 
 ### 4)  Use the App
-- Make sure you have a song playing (or paused) on a Spotify app
-- Visit http://localhost:3000
+- You will be directed to the website http://localhost:3000 automatically once you have both the server and the client running
 - Click 'Log in with Spotify' and log in
-- Click the 'Check Now Playing' Button
-- Your currently playing song's name and album art should appear
+- Input your friend's Spotify username and click find user to verify 
+- Click 'Generate Playlist' button to generate a fusion playlist of you and your friend on Spotify
 
