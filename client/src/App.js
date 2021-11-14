@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Button, TextField, createTheme, ThemeProvider } from '@material-ui/core';
-
-
 import { getCurrentUser, createNewPlaylist, getExternalUser, getUserPlaylists, getPlaylistTracks, addTracksToPlaylist } from './functions.js';
 
 
@@ -83,7 +81,7 @@ class App extends Component {
   }
 
   createNewPlaylist(){
-    createNewPlaylist(this.state.currentUser.id, "test playlist", this.state.auth).then(playlist => {
+    createNewPlaylist(this.state.currentUser.id, "Fusionify with " + this.state.oppUser.display_name +" Playlist", this.state.auth).then(playlist => {
       this.setState({ newPlaylist: playlist.data });
     });
 
@@ -144,12 +142,7 @@ class App extends Component {
           {this.state.currentUser.display_name}
         </div>}
         {!this.state.loggedIn && <a href='http://localhost:8888' > Login to Spotify </a>}
-        <div>
-          Now Playing: { this.state.nowPlaying.name }
-        </div>
-        <div>
-          <img src={this.state.nowPlaying.albumArt} alt="no cover" style={{ height: 150 }}/>
-        </div>
+      
         { this.state.loggedIn &&
           <ThemeProvider theme={theme}>
             <div textAlign='center'>
@@ -164,11 +157,6 @@ class App extends Component {
                 Generate Playlist
               </Button>
             </div>
-            {/* <div>
-              <Button variant='contained' color='primary' onClick={() => this.getNowPlaying()}>
-                Select Playlists
-              </Button>
-            </div> */}
           </ThemeProvider>
         }
       </div>
