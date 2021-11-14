@@ -13,11 +13,11 @@ export function getTrack(trackID, auth) {
 }
 
 export function getTopArtists(auth) {
-  const request = axios.get(baseURL + 'me/top/artists', auth);
-
-  request.then(function (resolve) {
-    return resolve;
-  }).catch(error => {
-    console.log(error ? error : "Could not retrieve");
-  })
+  return new Promise(function(resolve, reject) {
+    axios.get(baseURL + 'me/top/artists', auth).then(res => {
+      resolve(res);
+    }).catch(error => {
+      reject(error);
+    });
+  });
 }

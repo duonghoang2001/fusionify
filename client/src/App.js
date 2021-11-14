@@ -25,8 +25,13 @@ class App extends Component {
 
     this.state = {
       loggedIn: token ? true : false,
-      auth: {headers: {'Authorization': 'Bearer ' + token}}
+      auth: {headers: {'Authorization': 'Bearer ' + token}},
+      track: null,
     }
+  }
+
+  componentDidMount() {
+    this.getNowPlaying()
   }
 
   getHashParams() {
@@ -46,15 +51,19 @@ class App extends Component {
   }
 
   getNowPlaying(){
-    console.log('getNowPlaying() here');
+    getTrack('11dFghVXANMlKmJXsNCbNl', this.state.auth).then((a) => {
+      this.setState({ track: a }, () => {
+        console.log(this.state.track.data);
+      });
+    });
   }
 
   render() {
     return (
       <div className="App">
-        <div>
-          {console.log(getTrack('11dFghVXANMlKmJXsNCbNl', this.state.auth))} blah
-        </div>
+        {this.state.track && <div>
+          {this.state.track.data.name}
+        </div>}
         <div>
           {getTopArtists(this.state.auth)}
         </div>
@@ -63,7 +72,7 @@ class App extends Component {
         { this.state.loggedIn &&
           <ThemeProvider theme={theme}>
             <div>
-              <Button variant='contained' color='primary' onClick={() => this.getNowPlaying()}>
+              <Button variant='contained' color='primary' onClick={() => console.log(this.state.track ? this.state.track.data : 'yeet')}>
                 Select Users
               </Button>
               <Checkbox />
