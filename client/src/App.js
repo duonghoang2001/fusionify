@@ -22,7 +22,7 @@ class App extends Component {
     super();
     const params = this.getHashParams();
     const token = params.access_token;
-  
+
     this.state = {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' },
@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   getNowPlaying(){
- 
+    
   }
 
   render() {
