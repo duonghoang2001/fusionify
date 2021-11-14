@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import { Button, TextField, createTheme, ThemeProvider } from '@material-ui/core';
 
+
 import { getCurrentUser, createNewPlaylist, getExternalUser, getUserPlaylists, getPlaylistTracks, addTracksToPlaylist } from './functions.js';
+
 
 const theme = createTheme({
   palette: {
@@ -26,6 +28,7 @@ class App extends Component {
 
     this.state = {
       loggedIn: token ? true : false,
+
       auth: {headers: {'Authorization': 'Bearer ' + token}},
       track: null,
       currentUser: null,
@@ -55,6 +58,7 @@ class App extends Component {
     }
     return hashParams;
   }
+
 
   getCurrentUser(){
     getCurrentUser(this.state.auth).then(user => {
@@ -140,7 +144,12 @@ class App extends Component {
           {this.state.currentUser.display_name}
         </div>}
         {!this.state.loggedIn && <a href='http://localhost:8888' > Login to Spotify </a>}
-
+        <div>
+          Now Playing: { this.state.nowPlaying.name }
+        </div>
+        <div>
+          <img src={this.state.nowPlaying.albumArt} alt="no cover" style={{ height: 150 }}/>
+        </div>
         { this.state.loggedIn &&
           <ThemeProvider theme={theme}>
             <div textAlign='center'>
