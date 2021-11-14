@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import './App.css';
-import { Button } from '@material-ui/core';
+import { Button, Checkbox } from '@material-ui/core';
 
 import { getTrack, getTopArtists } from './functions.js';
 
@@ -29,6 +28,7 @@ class App extends Component {
       auth: {headers: {'Authorization': 'Bearer ' + token}}
     }
   }
+
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -41,6 +41,10 @@ class App extends Component {
     return hashParams;
   }
 
+  listUsers() {
+    return <Checkbox />;
+  }
+
   getNowPlaying(){
     console.log('getNowPlaying() here');
   }
@@ -48,12 +52,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {<div>
-          {getTrack('11dFghVXANMlKmJXsNCbNl', this.state.auth)}
-        </div>}
-        {<div>
+        <div>
+          {console.log(getTrack('11dFghVXANMlKmJXsNCbNl', this.state.auth))} blah
+        </div>
+        <div>
           {getTopArtists(this.state.auth)}
-        </div>}
+        </div>
         {!this.state.loggedIn && <a href='http://localhost:8888' > Login to Spotify </a>}
 
         { this.state.loggedIn &&
@@ -62,12 +66,13 @@ class App extends Component {
               <Button variant='contained' color='primary' onClick={() => this.getNowPlaying()}>
                 Select Users
               </Button>
+              <Checkbox />
             </div>
-            <div>
+            {/* <div>
               <Button variant='contained' color='primary' onClick={() => this.getNowPlaying()}>
                 Select Playlists
               </Button>
-            </div>
+            </div> */}
           </ThemeProvider>
         }
       </div>
