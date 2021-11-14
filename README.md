@@ -1,6 +1,6 @@
-# spotify-api-intro
+# Fusionify
 This Repo is the result of a tutorial that teaches how to use Spotify's API with react.
-It's a siple app that allos users to see what song they currently have playing on Spotify.
+It's a simple app that allows users to create a fusion playlist combining your and your friends' favorite songs on Spotify.
 There are two parts to it, the auth-server, and the client. 
 
 ## Getting Started
