@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+
 import './App.css';
 import { Button } from '@material-ui/core';
 
@@ -16,17 +16,13 @@ const theme = createTheme({
     }
   }
 });
-import SpotifyWebApi from 'spotify-web-api-js';
-const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
   constructor(){
     super();
     const params = this.getHashParams();
     const token = params.access_token;
-    if (token) {
-      spotifyApi.setAccessToken(token);
-    }
+  
     this.state = {
       loggedIn: token ? true : false,
       nowPlaying: { name: 'Not Checked', albumArt: '' },
@@ -46,15 +42,7 @@ class App extends Component {
   }
 
   getNowPlaying(){
-    spotifyApi.getMyCurrentPlaybackState()
-      .then((response) => {
-        this.setState({
-          nowPlaying: { 
-              name: response.item.name, 
-              albumArt: response.item.album.images[0].url
-            }
-        });
-      })
+ 
   }
 
   render() {
@@ -85,10 +73,10 @@ class App extends Component {
                 Select Playlists
               </Button>
             </div>
+            <button onClick={() => this.getNowPlaying()}>
+              Check Now Playing
+            </button>
           </ThemeProvider>
-          <button onClick={() => this.getNowPlaying()}>
-            Check Now Playing
-          </button>
         }
       </div>
     );
